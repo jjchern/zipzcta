@@ -1,0 +1,55 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# About
+
+This package includes a ZIP Code to ZCTA crosswalk table developed by John Snow, Inc. The data is downloaded from [UDS Mapper](http://www.udsmapper.org/zcta-crosswalk.cfm), and it should be able to link ZIP codes to 2010 Census ZCTAs.
+
+# Installation
+
+```r
+# install.packages("devtools")
+devtools::install_github("jjchern/zipzcta")
+```
+
+# Usage: Zip Codes -> ZCTAs -> Counties
+
+```{r, message=FALSE, warning=FALSE}
+# devtools::install_github("jjchern/zipzcta")
+# devtools::install_github("jjchern/zcta")
+
+library(dplyr)
+
+# ZIP codes to ZCTAs 
+zipzcta::zipzcta 
+
+# ZCTAs to Counties
+zctacounty = zcta::zcta_county_rel_10 %>%
+  select(zcta5, state, county, geoid, poppt, zpoppct) %>%
+  group_by(zcta5) %>%
+  slice(which.max(zpoppct)) %>%
+  left_join(gaze::county10, by = "geoid") %>%
+  select(zcta5, state, usps, county, geoid, name) 
+zctacounty
+
+# ZIP codes to ZCTAs to Counties
+zipcounty = zipzcta::zipzcta %>% 
+  left_join(zctacounty, by = c("zcta" = "zcta5")) %>% 
+  select(zip, zcta, state = usps, countygeoid = geoid, countyname = name) %>% 
+  arrange(zip)
+zipcounty
+```
+

@@ -1,0 +1,12 @@
+Package: zipzcta
+Title: ZIP Code to ZCTA Crosswalk Table
+Version: 0.0.0.9000
+Authors@R: 'JJ Chen <jiajia.chern@gmail.com> [aut, cre]'
+Description: ZIP Code to ZCTA crosswalk table developed by John Snow, Inc. (JSI). The data is for the 2014 UDS report data.
+Depends:
+    R (>= 3.2.2)
+License: CC0
+LazyData: true
+URL: https://github.com/jjchern/zipzcta
+BugReports: https://github.com/jjchern/zipzcta/issues
+RoxygenNote: 5.0.0.9000
